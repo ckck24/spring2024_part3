@@ -8,5 +8,25 @@
         select * from tbl_board where bno > 0 order by bno desc
     </select>
 
+    <insert id="insert">
+        <selectKey order="AFTER" keyProperty="bno" resultType="long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        insert into tbl_board (title, content, writer)
+        values (#{title},#{content},#{writer})
+    </insert>
+
+    <select id="select" resultType="BoardVO">
+        select * from tbl_board where bno = #{bno}
+    </select>
+
+    <update id="update">
+        update tbl_board
+        set title = #{title},
+        content = #{content},
+        updateDate = now()
+        where bno = #{bno}
+    </update>
 
 </mapper>

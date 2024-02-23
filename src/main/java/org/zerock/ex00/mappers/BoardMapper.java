@@ -6,4 +6,10 @@ public interface BoardMapper {
 
   java.util.List<BoardVO> getList();
 
+  int insert(BoardVO boardVO);
+
+  BoardVO select(Long bno);
+
+  int update(BoardVO boardVO);
+
 }
