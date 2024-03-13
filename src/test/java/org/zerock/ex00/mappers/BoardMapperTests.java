@@ -72,8 +72,8 @@ public class BoardMapperTests {
 
     Criteria criteria = new Criteria();
     criteria.setPageNum(2);
-    //1, 10
-
+    criteria.setTypes(new String[]{"T"});
+    criteria.setKeyword("1");
     java.util.List<BoardVO> list = boardMapper.getPage(criteria);
 
     list.forEach(boardVO -> log.info(boardVO));

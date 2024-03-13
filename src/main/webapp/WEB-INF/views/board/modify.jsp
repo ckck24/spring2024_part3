@@ -17,6 +17,7 @@
     </div>
     <div class="card-body">
         <form id="actionForm" action="/board/modify" method="post">
+
         <div class="input-group input-group-lg">
             <div class="input-group-prepend">
                 <span class="input-group-text">Bno</span>
@@ -56,6 +57,16 @@
     </div>
 </div>
 
+<form id="listForm" action="/board/list">
+    <input type="hidden" name="pageNum" value="${cri.pageNum}">
+    <input type="hidden" name="amount" value="${cri.amount}">
+    <c:if test="${cri.types != null && cri.keyword != null }">
+        <c:forEach var="type" items="${cri.types}">
+            <input type="hidden" name="types" value="${type}">
+        </c:forEach>
+        <input type="hidden" name="keyword" value="<c:out value="${cri.keyword}"/>">
+    </c:if>
+</form>
 
 <%@include file="../includes/footer.jsp"%>
 
@@ -63,9 +74,13 @@
 
     const bno = '${vo.bno}'
     const actionForm = document.querySelector("#actionForm")
+    const listForm = document.querySelector("#listForm")
 
     document.querySelector(".btnList").addEventListener("click",(e) => {
-        window.location="/board/list"
+        e.preventDefault()
+        e.stopPropagation()
+
+        listForm.submit()
     }, false)
 
     document.querySelector(".btnModify").addEventListener("click",(e) => {

@@ -21,6 +21,11 @@ public class BoardService {
     return boardMapper.getPage(criteria);
   }
 
+  public int getTotal(Criteria criteria){
+
+    return boardMapper.getTotal(criteria);
+  }
+
   public Long register(BoardVO boardVO){
 
     log.info("--------------"+ boardVO);

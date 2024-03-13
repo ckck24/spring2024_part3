@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.ex00.domain.BoardVO;
 import org.zerock.ex00.domain.Criteria;
+import org.zerock.ex00.domain.PageDTO;
 import org.zerock.ex00.service.BoardService;
 
 @Controller
@@ -39,6 +40,7 @@ public class BoardController {
           @ModelAttribute("cri") Criteria criteria,
           Model model){
     log.info("list................");
+    log.info("criteria: " + criteria);
 
     java.util.List<BoardVO> list = boardService.getList(criteria);
 
@@ -50,13 +52,19 @@ public class BoardController {
 
     model.addAttribute("list",list);
 
+    PageDTO pageDTO = new PageDTO(criteria, boardService.getTotal(criteria));
+
+    model.addAttribute("pageMaker", pageDTO);
+
   }
 
 
   @GetMapping({"/{job}/{bno}"})
   public String read(
           @PathVariable(name = "job") String job,
-          @PathVariable(name = "bno") Long bno, Model model ) {
+          @PathVariable(name = "bno") Long bno,
+          @ModelAttribute("cri") Criteria criteria,
+          Model model ) {
 
     log.info("job: " + job);
     log.info("bno: " + bno);
@@ -118,13 +126,16 @@ public class BoardController {
   @PostMapping("/modify/{bno}")
   public String modify(
           @PathVariable(name="bno") Long bno,
-          BoardVO boardVO){
+          BoardVO boardVO,
+          RedirectAttributes rttr){
 
     boardVO.setBno(bno);
 
     log.info("boardVO: " + boardVO);
 
     boardService.modify(boardVO);
+
+    rttr.addFlashAttribute("result", boardVO.getBno());
 
     return "redirect:/board/read/"+bno;
 
